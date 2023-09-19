@@ -1,0 +1,22 @@
+vm_rg_group_name     = "gha-tf-parameter-demo-rg"
+vm_rg_group_location = "West Europe"
+
+#vm_name        = "demo-vm1"
+admin_username = "adminsso"
+#admin_password = "*************"
+publisher      = "MicrosoftWindowsServer"
+offer          = "WindowsServer"
+sku            = "2016-Datacenter"
+vm_size        = "Standard_F2"
+/*
+version        = "latest"
+*/
+
+#network_name   = "demo-network"
+subnet_name    = "demo-server"
+#nic_name       = "demonic2166433"
+public_ip_name = "my-vm-pub-ip"
+
+subscriptions  = "741c7337-67ba-4533-b99d-cc208353eb03"
+nsg_name       = "mynsg" 
+
