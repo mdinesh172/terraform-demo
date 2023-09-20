@@ -43,12 +43,12 @@ jobs:
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: "./environments/dev/vm"
-        backend_config_file: backend.tfvars
-        backend-config: |
-          resource_group_name =${{ secrets.AZURE_RESOURCE_GROUP }}
-          storage_account_name =${{ secrets.AZURE_STORAGE_ACCOUNT }}
-          container_name       =${{ secrets.AZURE_CONTAINER_NAME }}
-          key                  =${{ secrets.AZURE_KEY }}
+        # backend_config_file: backend.tfvars
+        # backend-config: |
+        #   resource_group_name =${{ secrets.AZURE_RESOURCE_GROUP }}
+        #   storage_account_name =${{ secrets.AZURE_STORAGE_ACCOUNT }}
+        #   container_name       =${{ secrets.AZURE_CONTAINER_NAME }}
+        #   key                  =${{ secrets.AZURE_KEY }}
          
     # - name: 'Terraform Init'
     #   uses: hashicorp/terraform-github-actions@master
@@ -71,14 +71,13 @@ jobs:
     #     tf_actions_subcommand: 'validate'
     #     tf_actions_working_dir: "./environments/dev/vm"
          
-    # - name: 'Terraform Plan'
-    #   uses: hashicorp/terraform-github-actions@master
-    #   with:
-    #     tf_actions_version: 0.14.8
-    #     tf_actions_subcommand: 'plan'
-    #     tf_actions_working_dir: "./environments/dev/vm"
-    #     env: admin_password:${{ secrets.ADMIN_PASSWORD }}
-    #     args: -var-file="dev.tfvars" -var="admin_password=${{ secrets.ADMIN_PASSWORD }}" -var="nic_name=${{ github.event.inputs.nic }}" -var="vm_name=${{ github.event.inputs.vm_name }}" -var="network_name=${{ github.event.inputs.network_name }}"
+    - name: 'Terraform Plan'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.14.8
+        tf_actions_subcommand: 'plan'
+        tf_actions_working_dir: "./environments/dev/vm"
+        args: -var-file="dev.tfvars"
     #     backend-config: |
     #       resource_group_name =${{ secrets.AZURE_RESOURCE_GROUP }}
     #       storage_account_name =${{ secrets.AZURE_STORAGE_ACCOUNT }}
