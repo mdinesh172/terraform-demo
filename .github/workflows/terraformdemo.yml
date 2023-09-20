@@ -1,9 +1,9 @@
 name: Terraform Azure Deploy
 
-# on:
-#   push:
-#     branches:
-#       - master
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   terraform:
