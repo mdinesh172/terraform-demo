@@ -29,7 +29,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-         
+    - name: Create Backend Config File
+      run: |
+        echo 'resource_group_name = "${{ secrets.ARM_RESOURCE_GROUP_NAME }}"' > backend.tfvars
+        echo 'storage_account_name = "${{ secrets.ARM_STORAGE_ACCOUNT_NAME }}"' >> backend.tfvars
+        echo 'container_name = "${{ secrets.ARM_CONTAINER_NAME }}"' >> backend.tfvars
+        echo 'key = "${{ secrets.ARM_KEY }}"' >> backend.tfvars
+      working-directory: ./environments/dev/vm
+
     - name: 'Terraform Init'
       uses: hashicorp/terraform-github-actions@master
       with:
@@ -37,10 +44,19 @@ jobs:
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: "./environments/dev/vm"
         backend-config: |
-          resource_group_name =${{ secrets.ARM_RESOURCE_GROUP_NAME }}
-          storage_account_name =${{ secrets.ARM_STORAGE_ACCOUNT_NAME }}
-          container_name       =${{ secrets.ARM_CONTAINER_NAME }}
-          key                  =${{ secrets.ARM_KEY }}
+          path = "backend.tfvars"
+         
+    # - name: 'Terraform Init'
+    #   uses: hashicorp/terraform-github-actions@master
+    #   with:
+    #     tf_actions_version: 0.14.8
+    #     tf_actions_subcommand: 'init'
+    #     tf_actions_working_dir: "./environments/dev/vm"
+    #     backend-config: |
+    #       resource_group_name =${{ secrets.ARM_RESOURCE_GROUP_NAME }}
+    #       storage_account_name =${{ secrets.ARM_STORAGE_ACCOUNT_NAME }}
+    #       container_name       =${{ secrets.ARM_CONTAINER_NAME }}
+    #       key                  =${{ secrets.ARM_KEY }}
         #backend_config_file: "backend.tfvars"
         #args: -backend-config="backend.tfvars"
          
