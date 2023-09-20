@@ -1,0 +1,53 @@
+trigger:
+  branches:
+    exclude:
+      - '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Azure Service Principal credentials
+  ARM_CLIENT_ID: $(AZURE_CLIENT_ID)
+  ARM_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+  ARM_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
+  ARM_TENANT_ID: $(AZURE_TENANT_ID)
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+- script: |
+    # Install Azure CLI
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+  displayName: 'Install Azure CLI'
+
+- script: |
+    # Log in to Azure using the Service Principal credentials
+    az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+  displayName: 'Azure Login'
+
+- script: |
+    # Terraform initialization
+    terraform init -input=false \
+      -backend-config="storage_account_name=$(AZURE_STORAGE_ACCOUNT)" \
+      -backend-config="container_name=$(AZURE_CONTAINER_NAME)" \
+      -backend-config="key=terraform.tfstate" \
+      -backend-config="resource_group_name=$(AZURE_RESOURCE_GROUP)" \
+      -backend-config="subscription_id=$ARM_SUBSCRIPTION_ID" \
+      -backend-config="tenant_id=$ARM_TENANT_ID" \
+      -backend-config="client_id=$ARM_CLIENT_ID" \
+      -backend-config="client_secret=$ARM_CLIENT_SECRET"
+  displayName: 'Terraform Init'
+
+# - script: |
+#     # Terraform plan
+#     terraform plan
+#   displayName: 'Terraform Plan'
+
+# - script: |
+#     # Terraform apply
+#     terraform apply -auto-approve
+#   displayName: 'Terraform Apply'
