@@ -7,18 +7,11 @@ terraform {
   }
 }
 
-# Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
 }
 
 terraform {
-  backend "azurerm" {
-   
-resource_group_name  = "backend"
-storage_account_name  = "backendvm"
-container_name        = "demo2backend"
-key                   = "demo2backend.tfstate"
-    
+  backend "azurerm" { 
   }
 }
