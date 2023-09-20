@@ -1,0 +1,48 @@
+name: Terraform Azure Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.7
+
+    - name: Set up Azure CLI
+      uses: azure/setup-azure-cli@v1
+      with:
+        azcliversion: 2.30.0
+
+    - name: Log in to Azure
+      run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
+    
+    - name: Terraform Init
+      working-directory: ./environments/dev/vm
+      run: |
+        terraform init \
+          -backend-config="storage_account_name=${{ secrets.ARM_STORAGE_ACCOUNT_NAME }}" \
+          -backend-config="container_name=${{ secrets.ARM_CONTAINER_NAME }}" \
+          -backend-config="key=${{ secrets.ARM_KEY }}" \
+          -backend-config="resource_group_name=${{ secrets.ARM_RESOURCE_GROUP_NAME }}" \
+          -backend-config="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+          -backend-config="tenant_id=${{ secrets.ARM_TENANT_ID }}" \
+          -backend-config="client_id=${{ secrets.ARM_CLIENT_ID }}" \
+          -backend-config="client_secret=${{ secrets.ARM_CLIENT_SECRET }}"
+    
+    - name: Terraform Plan
+      working-directory: ./environments/dev/vm
+      run: terraform plan
+
+    - name: Terraform Apply
+      working-directory: ./environments/dev/vm
+      run: terraform apply -auto-approve
