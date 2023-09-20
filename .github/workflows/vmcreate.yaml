@@ -29,13 +29,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Create Backend Config File
-      run: |
-        echo 'resource_group_name = "${{ secrets.ARM_RESOURCE_GROUP_NAME }}"' > backend.tfvars
-        echo 'storage_account_name = "${{ secrets.ARM_STORAGE_ACCOUNT_NAME }}"' >> backend.tfvars
-        echo 'container_name = "${{ secrets.ARM_CONTAINER_NAME }}"' >> backend.tfvars
-        echo 'key = "${{ secrets.ARM_KEY }}"' >> backend.tfvars
-      working-directory: ./environments/dev/vm
+    # - name: Create Backend Config File
+    #   run: |
+    #     echo 'resource_group_name = "${{ secrets.ARM_RESOURCE_GROUP_NAME }}"' > backend.tfvars
+    #     echo 'storage_account_name = "${{ secrets.ARM_STORAGE_ACCOUNT_NAME }}"' >> backend.tfvars
+    #     echo 'container_name = "${{ secrets.ARM_CONTAINER_NAME }}"' >> backend.tfvars
+    #     echo 'key = "${{ secrets.ARM_KEY }}"' >> backend.tfvars
+    #   working-directory: ./environments/dev/vm
 
     - name: 'Terraform Init'
       uses: hashicorp/terraform-github-actions@master
