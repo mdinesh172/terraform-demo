@@ -1,1 +1,1 @@
-# demo2-vm
+# terraform-demo
