@@ -43,7 +43,7 @@ jobs:
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: "./environments/dev/vm"
-        # backend_config_file: backend.tfvars
+        backend_config_file: backend.tfvars
         # backend-config: |
         #   resource_group_name =${{ secrets.AZURE_RESOURCE_GROUP }}
         #   storage_account_name =${{ secrets.AZURE_STORAGE_ACCOUNT }}
@@ -78,20 +78,21 @@ jobs:
         tf_actions_subcommand: 'plan'
         tf_actions_working_dir: "./environments/dev/vm"
         args: -var-file="dev.tfvars"
+        backend_config_file: backend.tfvars
     #     backend-config: |
     #       resource_group_name =${{ secrets.AZURE_RESOURCE_GROUP }}
     #       storage_account_name =${{ secrets.AZURE_STORAGE_ACCOUNT }}
     #       container_name       =${{ secrets.AZURE_CONTAINER_NAME }}
     #       key                  =${{ secrets.AZURE_KEY }}
     - name: 'Terraform Apply'
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/master'
       uses: hashicorp/terraform-github-actions@master
       with:
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'apply'
         tf_actions_working_dir: "./environments/dev/vm"
         args: -var-file="dev.tfvars"
-        # backend_config_file: backend.tfvars
+        backend_config_file: backend.tfvars
     #     backend-config: |
     #       resource_group_name =${{ secrets.AZURE_RESOURCE_GROUP }}
     #       storage_account_name =${{ secrets.AZURE_STORAGE_ACCOUNT }}
