@@ -115,3 +115,19 @@ variable "nsg_name" {
   description = "public_ip_name"
   default     = ""
 }
+
+variable "ARM_RESOURCE_GROUP_NAME" {
+  type        = string
+}
+
+variable "ARM_STORAGE_ACCOUNT_NAME" {
+  type        = string
+}
+
+variable "ARM_CONTAINER_NAME" {
+  type        = string
+}
+
+variable "ARM_KEY" {
+  type        = string
+}
